@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0f0c">
+<meta name="description" content="Your personal basketball development system.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+<title>COURT IQ — Player Development</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <button class="brand" data-action="home" aria-label="COURT IQ home">
+      <span class="brand-icon">C<span>Q</span></span>
+      <span class="brand-copy"><b>COURT<span>IQ</span></b><small>PLAYER DEVELOPMENT</small></span>
+    </button>
+    <div class="top-actions">
+      <button class="icon-button" data-action="open-checkin" aria-label="Daily check-in" title="Daily check-in">☼</button>
+      <button class="avatar" data-action="edit-profile" aria-label="Edit player profile">P</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="setupView" class="setup-view hidden">
+      <div class="setup-art"><div class="court-lines"></div><div class="setup-ball">●</div><div class="eyebrow">YOUR NEXT LEVEL STARTS HERE</div><h1>Build your<br><em>player profile.</em></h1><p>Tell COURT IQ what you’re working on. Your plan will fit your goals, your time, and the gear you have.</p></div>
+      <form id="profileForm" class="card setup-form">
+        <div class="field"><label for="playerName">What should we call you?</label><input id="playerName" maxlength="24" placeholder="Player" autocomplete="given-name"></div>
+        <div class="field"><label for="goal">Main focus</label><select id="goal"><option value="shooting">Shooting consistency</option><option value="handles">Ball handling</option><option value="finishing">Finishing at the rim</option><option value="defense">Defense & footwork</option><option value="allaround">All-around game</option></select></div>
+        <div class="form-grid">
+          <div class="field"><label for="level">Experience</label><select id="level"><option value="beginner">Building basics</option><option value="intermediate">Team player</option><option value="advanced">Competitive</option></select></div>
+          <div class="field"><label for="days">Days / week</label><select id="days"><option value="2">2 days</option><option value="3">3 days</option><option value="4" selected>4 days</option><option value="5">5 days</option></select></div>
+          <div class="field"><label for="duration">Session length</label><select id="duration"><option value="20">20 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select></div>
+          <div class="field"><label for="equipment">Equipment</label><select id="equipment"><option value="court">Ball + hoop</option><option value="space">Ball, no hoop</option><option value="none">No ball today</option></select></div>
+        </div>
+        <div class="field"><label for="target">Personal target <span class="sub-label">OPTIONAL</span></label><input id="target" maxlength="90" placeholder="e.g. more confident with my left hand"></div>
+        <button class="button button-primary button-wide" type="submit">Create my training plan <span>↗</span></button>
+        <p class="microcopy">You can update these choices any time. Your data stays on this device.</p>
+      </form>
+    </section>
+
+    <section id="appView" class="hidden">
+      <div id="viewContent"></div>
+    </section>
+  </main>
+
+  <nav id="bottomNav" class="bottom-nav hidden" aria-label="Main navigation">
+    <button class="nav-button active" data-tab="home"><span>⌂</span>Home</button>
+    <button class="nav-button" data-tab="train"><span>◉</span>Train</button>
+    <button class="nav-button" data-tab="progress"><span>▥</span>Progress</button>
+    <button class="nav-button" data-tab="plan"><span>▦</span>My plan</button>
+    <button class="nav-button" data-tab="recovery"><span>♡</span>Recovery</button>
+  </nav>
+</div>
+
+<div id="workoutModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="workoutModalTitle">
+  <div class="modal-panel">
+    <div class="modal-top"><div><div class="eyebrow">FOCUS MODE</div><h2 id="workoutModalTitle">Today's workout</h2></div><button class="close-button" data-action="close-modal" aria-label="Close">×</button></div>
+    <p class="muted" id="modalSubtitle">Good reps. Full focus.</p>
+    <div class="timer-presets" aria-label="Timer duration"><button data-timer-seconds="30" class="selected">30 sec</button><button data-timer-seconds="60">1 min</button><button data-timer-seconds="120">2 min</button><button data-timer-seconds="300">5 min</button></div><div class="timer-face"><span id="timerDisplay">00:30</span><small id="timerLabel">READY WHEN YOU ARE</small></div>
+    <div class="timer-progress"><span id="timerProgress"></span></div>
+    <div class="timer-controls"><button class="button button-primary" data-action="timer-toggle" id="timerToggle">Start timer</button><button class="button button-soft" data-action="timer-reset">Reset</button></div>
+    <div id="modalDrills" class="modal-drills"></div>
+    <div class="modal-footer"><button class="button button-primary button-wide" data-action="complete-workout">Finish & save session <span>✓</span></button><p class="microcopy">You can pause, rest, or stop whenever you need to.</p></div>
+  </div>
+</div>
+
+<div id="checkinModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="checkinTitle">
+  <div class="modal-panel compact-panel">
+    <div class="modal-top"><div><div class="eyebrow">QUICK DAILY CHECK-IN</div><h2 id="checkinTitle">How are you feeling?</h2></div><button class="close-button" data-action="close-checkin" aria-label="Close">×</button></div>
+    <p class="muted">A smart session starts with listening to your body.</p>
+    <div class="choice-group" id="readinessChoices">
+      <button data-readiness="fresh"><b>⚡</b><strong>Ready</strong><small>Feeling good</small></button>
+      <button data-readiness="okay"><b>◒</b><strong>Okay</strong><small>Take it steady</small></button>
+      <button data-readiness="tired"><b>☾</b><strong>Tired</strong><small>Keep it light</small></button>
+    </div>
+    <div class="field"><label for="checkinNote">Anything to remember? <span class="sub-label">OPTIONAL</span></label><textarea id="checkinNote" rows="2" maxlength="180" placeholder="Energy, focus, a win from yesterday…"></textarea></div>
+    <button class="button button-primary button-wide" data-action="save-checkin">Save check-in</button>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
