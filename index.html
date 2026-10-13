@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101511">
+  <meta name="description" content="Your personal basketball training companion.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <title>COURT IQ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brandmark">CIQ</div>
+    <div class="brand"><strong>COURT IQ</strong><small>YOUR GAME. YOUR WORK.</small></div>
+    <button id="installBtn" class="install hidden" aria-label="Install app">Install</button>
+  </header>
+
+  <main>
+    <section id="setupScreen" class="screen hidden">
+      <div class="eyebrow">LET'S BUILD YOUR PLAN</div>
+      <h1>Your game.<br><span>Your roadmap.</span></h1>
+      <p class="muted">Answer a few quick questions and COURT IQ will shape a training plan around your goals, schedule, and experience.</p>
+      <form id="profileForm" class="panel form">
+        <label>What do you want to improve most?
+          <select id="goal" required>
+            <option value="shooting">Shooting consistency</option>
+            <option value="handles">Ball handling</option>
+            <option value="finishing">Finishing at the rim</option>
+            <option value="defense">Defense and footwork</option>
+            <option value="allaround">All-around game</option>
+          </select>
+        </label>
+        <label>Current experience
+          <select id="level">
+            <option value="beginner">Beginner / building fundamentals</option>
+            <option value="intermediate" selected>Intermediate / team player</option>
+            <option value="advanced">Advanced / competitive</option>
+          </select>
+        </label>
+        <label>Days you can train each week
+          <select id="days"><option value="2">2 days</option><option value="3">3 days</option><option value="4" selected>4 days</option><option value="5">5 days</option></select>
+        </label>
+        <label>Usual time per session
+          <select id="duration"><option value="20">20 minutes</option><option value="30" selected>30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select>
+        </label>
+        <label>Equipment available
+          <select id="equipment"><option value="court" selected>Hoop and ball</option><option value="space">Ball and small space</option><option value="none">No ball today</option></select>
+        </label>
+        <label>Any notes or specific targets? <span class="muted">(optional)</span>
+          <textarea id="notes" rows="2" placeholder="e.g. left-hand dribbling, catch-and-shoot confidence"></textarea>
+        </label>
+        <button class="primary full" type="submit">Create my plan <span>→</span></button>
+      </form>
+    </section>
+
+    <section id="appScreen" class="screen hidden">
+      <section class="hero">
+        <div class="eyebrow">PLAYER DASHBOARD</div>
+        <h1>Make today<br><span>count.</span></h1>
+        <p id="welcomeText" class="muted">Your plan, your pace. Stack good reps.</p>
+        <div class="hero-row">
+          <div><small>THIS WEEK</small><strong id="weekSessions">0 sessions</strong></div>
+          <div><small>STREAK</small><strong id="streak">0 days</strong></div>
+          <button id="editPlan" class="ghost">Edit plan</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><div><div class="eyebrow">TODAY'S WORKOUT</div><h2 id="todayTitle">Your session</h2></div><span id="durationPill" class="pill">30 MIN</span></div>
+        <div id="todayWorkout" class="panel workout"></div>
+        <button id="startWorkout" class="primary full">Start workout <span>→</span></button>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><div><div class="eyebrow">YOUR ROADMAP</div><h2>Personalized plan</h2></div><span class="muted tiny">6 WEEKS</span></div>
+        <div id="planSummary" class="panel"></div>
+        <div id="weekGrid" class="week-grid"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><div><div class="eyebrow">PLAYER PROGRESS</div><h2>Stats that matter</h2></div></div>
+        <div class="stats-grid">
+          <div class="panel stat"><small>SESSIONS</small><strong id="statSessions">0</strong><span>completed</span></div>
+          <div class="panel stat"><small>MINUTES</small><strong id="statMinutes">0</strong><span>trained</span></div>
+          <div class="panel stat"><small>SHOTS MADE</small><strong id="statShots">0</strong><span>logged</span></div>
+          <div class="panel stat"><small>BEST STREAK</small><strong id="statStreak">0</strong><span>days</span></div>
+        </div>
+        <div class="panel log-form">
+          <h3>Log shooting reps</h3>
+          <p class="muted tiny">Record makes and attempts from a drill or workout.</p>
+          <div class="input-row"><label>Makes<input id="makesInput" type="number" min="0" max="1000" value="0"></label><label>Attempts<input id="attemptsInput" type="number" min="0" max="1000" value="0"></label></div>
+          <button id="saveShots" class="secondary full">Save shooting stats</button>
+          <p id="shotFeedback" class="feedback" aria-live="polite"></p>
+        </div>
+        <div class="panel"><div class="section-head"><h3>Recent sessions</h3><button id="exportCsv" class="text-btn">Export CSV</button></div><div id="history" class="history"></div></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><div><div class="eyebrow">TRAIN SMART</div><h2>Recovery & focus</h2></div></div>
+        <div class="panel">
+          <div class="tip"><span class="tip-icon">↗</span><div><strong>Warm up first</strong><p>Use 5–8 minutes of easy movement, dynamic stretches, and controlled ball handling before intense work.</p></div></div>
+          <div class="tip"><span class="tip-icon">◌</span><div><strong>Quality beats exhaustion</strong><p>Stop a drill when your technique breaks down. Rest, reset, then return with purpose.</p></div></div>
+          <div class="tip"><span class="tip-icon">✦</span><div><strong>Review one thing</strong><p>After each session, note one win and one thing to improve next time.</p></div></div>
+          <div class="tip"><span class="tip-icon">♡</span><div><strong>Recovery is training</strong><p>Sleep, hydration, rest days, and pain-free movement help you get more from practice.</p></div></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <nav id="bottomNav" class="bottom-nav hidden" aria-label="Main navigation">
+    <button class="nav-item active" data-target="home"><span>⌂</span>Home</button>
+    <button class="nav-item" data-target="train"><span>◉</span>Train</button>
+    <button class="nav-item" data-target="stats"><span>▥</span>Stats</button>
+    <button class="nav-item" data-target="plan"><span>▦</span>Plan</button>
+  </nav>
+
+  <div id="workoutModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="timerTitle">
+    <div class="modal-card">
+      <button id="closeModal" class="close" aria-label="Close workout">×</button>
+      <div class="eyebrow">FOCUS MODE</div>
+      <h2 id="timerTitle">Workout timer</h2>
+      <p id="timerDrill" class="muted">Get ready.</p>
+      <div id="timerDisplay" class="timer">00:30</div>
+      <div class="timer-actions"><button id="timerStart" class="primary">Start</button><button id="timerReset" class="secondary">Reset</button></div>
+      <div class="timer-track"><div id="timerBar"></div></div>
+      <div id="drillList" class="drill-list"></div>
+      <button id="completeWorkout" class="primary full">Finish & log session</button>
+      <p class="muted tiny">Take breaks as needed. The timer is a guide, not a test.</p>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
